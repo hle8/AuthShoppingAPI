@@ -1,4 +1,4 @@
-using AuthShopping.Data;
+using AuthShopping.Api.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

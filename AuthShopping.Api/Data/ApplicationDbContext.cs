@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using AuthShopping.Models;
 
-namespace AuthShopping.Data;
+namespace AuthShopping.Api.Data;
 
 public class ApplicationDbContext : DbContext
 {
