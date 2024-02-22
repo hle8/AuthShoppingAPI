@@ -1,4 +1,4 @@
-using AuthShopping.Data;
+using AuthShopping.Api.Data;
 using AuthShopping.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,24 +8,27 @@ namespace AuthShopping.Api.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/[action]")]
 public class ShoppingCartController : ControllerBase
 {
     private readonly ApplicationDbContext _applicationDbContext;
 
-    public ShoppingCartController(ILogger<ShoppingCartController> logger, ApplicationDbContext applicationDbContext)
+    public ShoppingCartController(ApplicationDbContext applicationDbContext)
     {
         _applicationDbContext = applicationDbContext;
     }
 
     [HttpGet]
-    public async Task<List<ProductModel>?> GetUsersProducts()
+    public async Task<List<ProductModel>> GetUsersProducts()
     {
         var user = User.Identity?.Name ?? string.Empty;
 
         var cart = await _applicationDbContext.ShoppingCarts.Where(cart => cart.User == user).FirstOrDefaultAsync();
 
-        return cart?.Products;
+        if (cart?.Products is null)
+            return [];
+        else
+            return cart.Products;
     }
 
     [HttpPost]
@@ -54,10 +57,7 @@ public class ShoppingCartController : ControllerBase
             _applicationDbContext.Add(new ShoppingCartModel()
             {
                 User = user,
-                Products = [new ProductModel()
-                {
-                    Id = id
-                }]
+                Products = [new ProductModel() { Id = id }]
             });
         }
         else
