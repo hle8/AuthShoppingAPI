@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a simple authenticated shopping API which allow user to get products based on their identity.
+This is a simple authenticated shopping API which allow registered users to get products based on their identity.
 
 ## Components
 
@@ -11,12 +11,12 @@ This is a simple authenticated shopping API which allow user to get products bas
 
 ## What I have done
 
- | Task                                                                                     | Status             |
- | ---------------------------------------------------------------------------------------- | ------------------ |
- | Create an ASP.Net Core Web API                                                           | :white_check_mark: |
- | Create Class Library and Testing projects                                                | :white_check_mark: |
- | Create Product, Category, Shopping Cart models                                           | :white_check_mark: |
- | Create 2 DBContext for Security entities and Application Data                            | :white_check_mark: |
- | Create an authorized ShoppingCart controller                                             | :white_check_mark: |
- | Create an authorized Product controller                                                  | :white_check_mark: |
- | Create 4 Unit tests for each of the Models                                               | :white_check_mark: |
+| Task                                                          | Status             |
+| ------------------------------------------------------------- | ------------------ |
+| Create an ASP.Net Core Web API                                | :white_check_mark: |
+| Create Class Library and Testing projects                     | :white_check_mark: |
+| Create Product, Category, Shopping Cart models                | :white_check_mark: |
+| Create 2 DBContext for Security entities and Application Data | :white_check_mark: |
+| Create an authorized ShoppingCart controller                  | :white_check_mark: |
+| Create an authorized Product controller                       | :white_check_mark: |
+| Create 4 Unit tests for each of the Models                    | :white_check_mark: |
