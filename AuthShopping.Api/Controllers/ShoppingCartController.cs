@@ -25,10 +25,7 @@ public class ShoppingCartController : ControllerBase
 
         var cart = await _applicationDbContext.ShoppingCarts.Where(cart => cart.User == user).FirstOrDefaultAsync();
 
-        if (cart?.Products is null)
-            return [];
-        else
-            return cart.Products;
+        return cart?.Products is null ? ([]) : cart.Products;
     }
 
     [HttpPost]
@@ -48,22 +45,29 @@ public class ShoppingCartController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateUsersProduct(int id)
     {
+        var product = await _applicationDbContext.Products.FindAsync(id);
+
+        // Check for null product
+        if (product is null)
+            return BadRequest(id);
+
         var user = User.Identity?.Name ?? string.Empty;
 
         var cart = await _applicationDbContext.ShoppingCarts.Where(cart => cart.User == user).FirstOrDefaultAsync();
 
+        // Check for null shopping cart
         if (cart is null)
         {
-            _applicationDbContext.Add(new ShoppingCartModel()
+            cart = new ShoppingCartModel()
             {
-                User = user,
-                Products = [new ProductModel() { Id = id }]
-            });
+                User = user
+            };
+            cart.Products.Add(product);
+
+            _applicationDbContext.Add(cart);
         }
         else
-        {
-            cart.Products.Add(new ProductModel() { Id = id });
-        }
+            cart.Products.Add(product);
 
         await _applicationDbContext.SaveChangesAsync();
 
