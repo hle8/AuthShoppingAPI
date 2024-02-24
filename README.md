@@ -11,7 +11,7 @@ This is a simple authenticated shopping API which allow registered users to get 
 
 ## Useful Links
 
-[Eager Loading of Related Data](https://learn.microsoft.com/en-us/ef/core/querying/related-data/eager)
+- [Eager Loading of Related Data](https://learn.microsoft.com/en-us/ef/core/querying/related-data/eager)
 
 ## What I have done
 
@@ -24,7 +24,8 @@ This is a simple authenticated shopping API which allow registered users to get 
 | Create an authorized ShoppingCart controller                  | :white_check_mark: |
 | Create an authorized Product controller                       | :white_check_mark: |
 | Create 4 Unit tests for each of the Models                    | :white_check_mark: |
+| Updated 2 controllers to retrieve chidren data                | :white_check_mark: |
 
 ## Fun Facts
 
-I built this API on my Raspberry Pi 4 Model B (just want to test my new SD card).
+> I built this API on my Raspberry Pi 4 Model B (just want to test my new SD card).
