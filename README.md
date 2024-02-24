@@ -9,6 +9,10 @@ This is a simple authenticated shopping API which allow registered users to get 
 - [Microsoft.AspNetCore.Identity.EntityFrameworkCore](https://www.nuget.org/packages/Microsoft.AspNetCore.Identity.EntityFrameworkCore)
 - [Microsoft.EntityFrameworkCore.InMemory](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory)
 
+## Useful Links
+
+[Eager Loading of Related Data](https://learn.microsoft.com/en-us/ef/core/querying/related-data/eager)
+
 ## What I have done
 
 | Task                                                          | Status             |
