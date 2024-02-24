@@ -19,9 +19,9 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public Task<List<ProductModel>> GetProducts()
+    public async Task<IActionResult> GetProducts()
     {
-        return _applicationDbContext.Products.ToListAsync();
+        return Ok(await _applicationDbContext.Products.Include(product => product.Category).ToListAsync() ?? []);
     }
 
     [HttpGet]
@@ -38,17 +38,18 @@ public class ProductController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddProduct(ProductModel newProduct)
     {
-        var product = await _applicationDbContext.Products.FindAsync(newProduct);
+        // Check for duplicated product
+        var product = await _applicationDbContext.Products.Where
+        (product =>
+            product.Name == newProduct.Name &&
+            product.Price == newProduct.Price &&
+            product.Description == newProduct.Description &&
+            product.Category == newProduct.Category
+        ).FirstOrDefaultAsync();
 
         if (product is null)
+            // Create new product if not null
             _applicationDbContext.Add(newProduct);
-        else
-        {
-            product.Category = newProduct.Category;
-            product.Description = newProduct.Description;
-            product.Price = newProduct.Price;
-            product.Name = newProduct.Name;
-        }
 
         await _applicationDbContext.SaveChangesAsync();
 

@@ -19,37 +19,46 @@ public class ShoppingCartController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<List<ProductModel>> GetUsersProducts()
+    public async Task<IActionResult> GetProducts()
     {
         var user = User.Identity?.Name ?? string.Empty;
 
-        var cart = await _applicationDbContext.ShoppingCarts.Where(cart => cart.User == user).FirstOrDefaultAsync();
+        var cart = await _applicationDbContext.ShoppingCarts
+        .Include(cart => cart.Products)
+        .ThenInclude(product => product.Category)
+        .FirstOrDefaultAsync();
 
-        return cart?.Products is null ? ([]) : cart.Products;
+        if (cart is null)
+            return Ok(new List<ProductModel>());
+
+        return Ok(cart.Products.ToList());
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteUsersProduct(int id)
+    public async Task<IActionResult> DeleteProduct(int id)
     {
         var user = User.Identity?.Name ?? string.Empty;
 
-        var cart = await _applicationDbContext.ShoppingCarts.Where(cart => cart.User == user).FirstOrDefaultAsync();
+        var cart = await _applicationDbContext.ShoppingCarts
+        .Where(cart => cart.User == user)
+        .Include(cart => cart.Products)
+        .FirstOrDefaultAsync();
 
-        cart?.Products.RemoveAll(product => product.Id == id);
+        var result = cart?.Products.RemoveAll(product => product.Id == id);
 
         await _applicationDbContext.SaveChangesAsync();
 
-        return Ok();
+        return Ok(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateUsersProduct(int id)
+    public async Task<IActionResult> AddProduct(int id)
     {
         var product = await _applicationDbContext.Products.FindAsync(id);
 
         // Check for null product
         if (product is null)
-            return BadRequest(id);
+            return BadRequest($"Product:{id} not existing");
 
         var user = User.Identity?.Name ?? string.Empty;
 

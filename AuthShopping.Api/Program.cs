@@ -8,12 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>
 (
-    options => options.UseInMemoryDatabase("DataDb")
+    // options => options.UseInMemoryDatabase("DataDb")
+    options => options.UseSqlite("Data Source=Data.db")
 );
 
 builder.Services.AddDbContext<SecurityDbContext>
 (
-    options => options.UseInMemoryDatabase("SecurityDb")
+    // options => options.UseInMemoryDatabase("SecurityDb")
+    options => options.UseSqlite("Data Source=Security.db")
 );
 
 builder.Services.AddAuthorization();
