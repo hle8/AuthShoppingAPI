@@ -21,9 +21,10 @@ public class ShoppingCartController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetProducts()
     {
-        var user = User.Identity?.Name ?? string.Empty;
+        var userName = User.Identity?.Name ?? string.Empty;
 
         var cart = await _applicationDbContext.ShoppingCarts
+        .Where(cart => cart.User == userName)
         .Include(cart => cart.Products)
         .ThenInclude(product => product.Category)
         .FirstOrDefaultAsync();
@@ -37,10 +38,10 @@ public class ShoppingCartController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> DeleteProduct(int id)
     {
-        var user = User.Identity?.Name ?? string.Empty;
+        var userName = User.Identity?.Name ?? string.Empty;
 
         var cart = await _applicationDbContext.ShoppingCarts
-        .Where(cart => cart.User == user)
+        .Where(cart => cart.User == userName)
         .Include(cart => cart.Products)
         .FirstOrDefaultAsync();
 
@@ -60,16 +61,16 @@ public class ShoppingCartController : ControllerBase
         if (product is null)
             return BadRequest($"Product:{id} not existing");
 
-        var user = User.Identity?.Name ?? string.Empty;
+        var userName = User.Identity?.Name ?? string.Empty;
 
-        var cart = await _applicationDbContext.ShoppingCarts.Where(cart => cart.User == user).FirstOrDefaultAsync();
+        var cart = await _applicationDbContext.ShoppingCarts.Where(cart => cart.User == userName).FirstOrDefaultAsync();
 
         // Check for null shopping cart
         if (cart is null)
         {
             cart = new ShoppingCartModel()
             {
-                User = user
+                User = userName
             };
             cart.Products.Add(product);
 
